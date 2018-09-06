@@ -1,6 +1,7 @@
 $(function (){
     var $wrapper = $('#mt-20');
     var $table = $('#UserId');
+    var $totaldata = $('total');
 
     var _table = $table.dataTable($.extend(true,{},CONSTANT.DATA_TABLES.DEFAULT_OPTION, {
         ajax : function(data, callback, settings) {//ajax配置为function,手动调用异步查询
@@ -42,59 +43,57 @@ $(function (){
         columns: [
             CONSTANT.DATA_TABLES.COLUMN.CHECKBOX,
             {
+                data: "uid",
+                width: "70px"
+            },
+            {
                 //className : "text-overflow",	//文字过长时用省略号显示，CSS实现
                 data: "uname"
                 //render : CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,//会显示省略号的列，需要用title属性实现划过时显示全部文本的效果
             },
             {
-                data: "sex"
-                //render : CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,
+                data: "sex",
                 //固定列宽，但至少留下一个活动列不要固定宽度，让表格自行调整。不要将所有列都指定列宽，否则页面伸缩时所有列都会随之按比例伸缩。
                 //切记设置table样式为table-layout:fixed; 否则列宽不会强制为指定宽度，也不会出现省略号。
-                //width : "80px"
+                width : "60px"
             },
             {
                 data : "phoneNumber",
-                width : "80px"
-               /* render : function(data,type, row, meta) {
-                    return '<i class="fa fa-male"></i> '+(data?"在线":"离线");
-                }*/
+                width : "160px"
             },
             {
                 data : "head",
                 className : "text-overflow",	//文字过长时用省略号显示，CSS实现
-                render : CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,
+                render : CONSTANT.DATA_TABLES.RENDER.HEAD,
                 defaultContent:"",
                 orderable : false,
-                width : "80px"
+                width : "150px"
             },
             {
                 data : "birthday",
                 defaultContent:"",
-                width : "80px"
+                width : "100px"
             },
             {
                 className : "td-manage",
                 data: null,
                 defaultContent:"",
                 orderable : false,
-                width : "120px"
+                width : "80px"
             }
         ],
         "createdRow": function ( row, data, index ) {
             //行渲染回调,在这里可以对该行dom元素进行任何操作
             //给当前行加样式
-            if (data.uname) {
+            if (data.uid) {
                 $(row).addClass("text-c");
             }
             //给当前行某列加样式
             //$('td', row).eq(3).addClass(data.status?"text-success":"text-error");
             //不使用render，改用jquery文档操作呈现单元格
-            //var $btnEdit = $('<button type="button" class="btn btn-small btn-primary btn-edit">修改</button>');
-            //var $btnDel = $('<button type="button" class="btn btn-small btn-danger btn-del">删除</button>');
             var $btnEdit = $('<a title=\'编辑\' href=\'javascript:;\' onclick=member_edit(\'编辑\',\'member-add.html\',\'4\',\'\',\'510\') class=\'ml-5\' style=\'text-decoration:none\'><i class=\'Hui-iconfont\'>&#xe6df;</i></a>');
-            var $btnDel = $('<a title=\'修改密码\' href=\'javascript:;\' onClick=change_password(\'修改密码\',\'change-password.html\',\'10001\',\'600\',\'270\') class=\'ml-5\' style=\'text-decoration:none\'><i class=\'Hui-iconfont\'>&#xe63f;</i></a>');
-            $('td', row).eq(6).append($btnEdit).append($btnDel);
+            var $btnDel = $('<a title=\'删除\' href=\'javascript:;\'  onclick=member_del(this,\'1\') class=\'ml-5\' style=\'text-decoration:none\'><i class=\'Hui-iconfont\'>&#xe6e2;</i></a>');
+            $('td', row).eq(7).append($btnEdit).append($btnDel);
 
         },
         "drawCallback": function( settings ) {
@@ -102,7 +101,7 @@ $(function (){
             //清空全选状态
             $(":checkbox[name='cb-check-all']",$wrapper).prop('checked', false);
             //默认选中第一行
-            $("tbody tr",$table).eq(0).click();
+            //$("tbody tr",$table).eq(0).click();
         }
     })).api();//此处需调用api()方法,否则返回的是JQuery对象而不是DataTables的API对象
 
@@ -208,19 +207,22 @@ var userManage = {
         if (data.order&&data.order.length&&data.order[0]) {
             switch (data.order[0].column) {
                 case 1:
-                    param.orderColumn = "uname";
+                    param.orderColumn = "uid";
                     break;
                 case 2:
-                    param.orderColumn = "sex";
+                    param.orderColumn = "uname";
                     break;
                 case 3:
+                    param.orderColumn = "sex";
+                    break;
+                case 4:
                     param.orderColumn = "phoneNumber";
                     break;
-                case 5:
+                case 6:
                     param.orderColumn = "birthday";
                     break;
                 default:
-                    param.orderColumn = "uname";
+                    param.orderColumn = "uid";
                     break;
             }
             param.orderDir = data.order[0].dir;

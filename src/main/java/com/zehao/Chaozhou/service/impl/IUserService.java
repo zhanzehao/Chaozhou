@@ -32,8 +32,8 @@ public class IUserService implements UserService {
         String total;
 
         String orderColumn = pageParam.getOrderColumn();
-        Logger.error(orderColumn);
-        if (orderColumn == null) orderColumn = "uname";
+        if (orderColumn == null) orderColumn = "uid";
+        if (orderColumn.equals("phoneNumber")) orderColumn = "phone_number";
 
         String orderDir = pageParam.getOrderDir();
         if (orderDir == null) orderDir = "asc";

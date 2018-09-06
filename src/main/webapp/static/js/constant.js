@@ -1,4 +1,5 @@
 /*常量*/
+var pictureBaseUrl = "https://chouzhou-1256247322.cos-website.ap-guangzhou.myqcloud.com/";
 var CONSTANT = {
     DATA_TABLES : {
         DEFAULT_OPTION : { //DataTables初始化选项
@@ -49,6 +50,11 @@ var CONSTANT = {
             ELLIPSIS: function (data, type, row, meta) {
                 data = data||"";
                 return '<span title="' + data + '">' + data + '</span>';
+            },
+            HEAD: function (data,type,row,meta) {
+                if (data != null && data != "") {
+                    return '<img width="110" height="100" class="picture-thumb" src="'+pictureBaseUrl+data+'">';
+                }
             }
         }
     }
