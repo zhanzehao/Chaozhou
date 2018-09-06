@@ -7,6 +7,7 @@ import com.zehao.Chaozhou.param.PageParam;
 import com.zehao.Chaozhou.pojo.Tbuser;
 import com.zehao.Chaozhou.pojo.TbuserExample;
 import com.zehao.Chaozhou.service.UserService;
+import com.zehao.Chaozhou.utils.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +32,8 @@ public class IUserService implements UserService {
         String total;
 
         String orderColumn = pageParam.getOrderColumn();
-        if (orderColumn == null) orderColumn = "uid";
+        Logger.error(orderColumn);
+        if (orderColumn == null) orderColumn = "uname";
 
         String orderDir = pageParam.getOrderDir();
         if (orderDir == null) orderDir = "asc";

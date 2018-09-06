@@ -43,11 +43,11 @@ $(function (){
             CONSTANT.DATA_TABLES.COLUMN.CHECKBOX,
             {
                 //className : "text-overflow",	//文字过长时用省略号显示，CSS实现
-                data: "uname",
+                data: "uname"
                 //render : CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,//会显示省略号的列，需要用title属性实现划过时显示全部文本的效果
             },
             {
-                data: "sex",
+                data: "sex"
                 //render : CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,
                 //固定列宽，但至少留下一个活动列不要固定宽度，让表格自行调整。不要将所有列都指定列宽，否则页面伸缩时所有列都会随之按比例伸缩。
                 //切记设置table样式为table-layout:fixed; 否则列宽不会强制为指定宽度，也不会出现省略号。
@@ -55,7 +55,7 @@ $(function (){
             },
             {
                 data : "phoneNumber",
-                width : "80px",
+                width : "80px"
                /* render : function(data,type, row, meta) {
                     return '<i class="fa fa-male"></i> '+(data?"在线":"离线");
                 }*/
