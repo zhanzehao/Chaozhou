@@ -1,0 +1,17 @@
+.idea/workspace.xml
+.gitattributes
+.idea/artifacts/
+.idea/compiler.xml
+.idea/copyright/
+.idea/dataSources/
+.idea/encodings.xml
+.idea/inspectionProfiles/
+.idea/libraries/
+.idea/misc.xml
+.idea/modules.xml
+.idea/uiDesigner.xml
+.idea/vcs.xml
+Chaozhou.iml
+LICENSE
+target/
+src/resources/config/db.properties
