@@ -27,14 +27,14 @@
 	<div class="text-c">
 
 	</div>
-	<div class="cl pd-5 bg-1 bk-gray mt-20">
+	<div class="cl pd-5 bg-1 bk-gray ">
 		<span class="l">
 			<a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
 			<a href="javascript:;" onclick="member_add('添加用户','member-add.html','','510')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加用户</a>
 		</span>
 	</div>
 	<div class="mt-20">
-	<table id = "UserId" class="table table-border table-bordered table-hover table-bg table-sort">
+	<table id = "UserId" class="table table-border table-bordered table-hover table-bg table-sort mytable">
 		<thead>
 			<tr class="text-c">
 				<th width="30"><input type="checkbox" name="cb-check-all" value=""></th>
