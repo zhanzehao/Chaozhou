@@ -1,7 +1,6 @@
 $(function (){
     var $wrapper = $('#mt-20');
     var $table = $('#UserId');
-    var $totaldata = $('total');
 
     var _table = $table.dataTable($.extend(true,{},CONSTANT.DATA_TABLES.DEFAULT_OPTION, {
         ajax : function(data, callback, settings) {//ajax配置为function,手动调用异步查询
@@ -33,6 +32,7 @@ $(function (){
                     //调用DataTables提供的callback方法，代表数据已封装完成并传回DataTables进行渲染
                     //此时的数据需确保正确无误，异常判断应在执行此回调前自行处理完毕
                     callback(returnData);
+
                 },
                 error: function(XMLHttpRequest, textStatus, errorThrown) {
                     alert("查询失败");
@@ -104,6 +104,7 @@ $(function (){
             //$("tbody tr",$table).eq(0).click();
         }
     })).api();//此处需调用api()方法,否则返回的是JQuery对象而不是DataTables的API对象
+
 
    /*
     $("#btn-add").click(function(){
