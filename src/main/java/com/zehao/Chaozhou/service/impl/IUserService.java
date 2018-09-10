@@ -3,15 +3,13 @@ package com.zehao.Chaozhou.service.impl;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.zehao.Chaozhou.mapper.TbuserMapper;
-import com.zehao.Chaozhou.param.PageParam;
+import com.zehao.Chaozhou.param.UserQueryParam;
 import com.zehao.Chaozhou.pojo.Tbuser;
 import com.zehao.Chaozhou.pojo.TbuserExample;
 import com.zehao.Chaozhou.service.UserService;
-import com.zehao.Chaozhou.utils.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.ws.rs.QueryParam;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,28 +22,52 @@ public class IUserService implements UserService {
     private TbuserMapper tbuserMapper;
 
     @Override
-    public String queryAllUser(PageParam pageParam) {
+    public String queryAllUser(UserQueryParam userQueryParam) {
 
-        String draw = pageParam.getDraw();
-        String startIndex = pageParam.getStartIndex();
-        String pageSize = pageParam.getPageSize();
+        String draw = userQueryParam.getDraw();
+        String startIndex = userQueryParam.getStartIndex();
+        String pageSize = userQueryParam.getPageSize();
         String total;
 
-        String orderColumn = pageParam.getOrderColumn();
+        String orderColumn = userQueryParam.getOrderColumn();
         if (orderColumn == null) orderColumn = "uid";
         if (orderColumn.equals("phoneNumber")) orderColumn = "phone_number";
 
-        String orderDir = pageParam.getOrderDir();
+        String orderDir = userQueryParam.getOrderDir();
         if (orderDir == null) orderDir = "asc";
 
         TbuserExample tbuserExample = new TbuserExample();
+        TbuserExample.Criteria criteria = tbuserExample.createCriteria();
+
+        String fuzzy = userQueryParam.getFuzzySearch();
+        if("true".equals(fuzzy)){
+            String searchValue = userQueryParam.getFuzzy();
+            if (searchValue!=null&&!searchValue.equals("")) {
+                criteria.andUnameLike("%"+searchValue+"%");
+                criteria.andPhoneNumberLike("%"+searchValue+"%");
+                criteria.andSexLike("%"+searchValue+"%");
+            }
+        }else {
+            String uname = userQueryParam.getUname();
+            if (uname!=null&&!uname.equals("")) {
+                criteria.andUnameLike("%"+uname+"%");
+            }
+            String phoneNumber = userQueryParam.getPhoneNumber();
+            if (phoneNumber!=null&&!phoneNumber.equals("")) {
+                criteria.andPhoneNumberLike("%"+phoneNumber+"%");
+            }
+            String sex = userQueryParam.getSex();
+            if (sex!=null&&!sex.equals("")) {
+                criteria.andSexLike("%"+sex+"%");
+            }
+        }
 
         tbuserExample.setOrderByClause(orderColumn+" "+orderDir);
         tbuserExample.setOffset(startIndex);
         tbuserExample.setLimit(pageSize);
 
         List<Tbuser> tbuserList = tbuserMapper.selectByExample(tbuserExample);
-        total = String.valueOf(tbuserMapper.selectByExample(null).size());
+        total = String.valueOf(tbuserMapper.countByExample(tbuserExample));
 
         Gson gson = new GsonBuilder().serializeNulls().create();
 

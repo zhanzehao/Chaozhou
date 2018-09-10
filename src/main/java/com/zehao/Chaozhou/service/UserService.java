@@ -1,6 +1,6 @@
 package com.zehao.Chaozhou.service;
 
-import com.zehao.Chaozhou.param.PageParam;
+import com.zehao.Chaozhou.param.UserQueryParam;
 
 
 /**
@@ -8,5 +8,5 @@ import com.zehao.Chaozhou.param.PageParam;
  */
 public interface UserService {
 
-    String queryAllUser(PageParam pageParam);
+    String queryAllUser(UserQueryParam userQueryParam);
 }

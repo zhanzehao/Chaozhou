@@ -16,6 +16,10 @@
 
     <mvc:default-servlet-handler/>
 
+    <mvc:interceptors>
+        <bean class="com.zehao.Chaozhou.utils.ProcessInterceptor"/>
+    </mvc:interceptors>
+
     <!-- 配置jsp视图解析器 -->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <!-- 前缀 -->

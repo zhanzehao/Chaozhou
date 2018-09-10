@@ -10,7 +10,7 @@ $(function (){
             var param = userManage.getQueryCondition(data);
             $.ajax({
                 type: "POST",
-                url: "displayAllUser",
+                url: "http://127.0.0.1:8080/Chaozhou/displayAllUser",
                 cache : false,	//禁用缓存
                 data: JSON.stringify(param),	//传入已封装的参数
                 dataType: "json",
@@ -105,27 +105,12 @@ $(function (){
         }
     })).api();//此处需调用api()方法,否则返回的是JQuery对象而不是DataTables的API对象
 
-
-   /*
-    $("#btn-add").click(function(){
-        userManage.addItemInit();
-    });
-
-    $("#btn-del").click(function(){
-        var arrItemId = [];
-        $("tbody :checkbox:checked",$table).each(function(i) {
-            var item = _table.row($(this).closest('tr')).data();
-            arrItemId.push(item);
-        });
-        userManage.deleteItem(arrItemId);
-    });
-
     $("#btn-simple-search").click(function(){
         userManage.fuzzySearch = true;
 
         //reload效果与draw(true)或者draw()类似,draw(false)则可在获取新数据的同时停留在当前页码,可自行试验
-//		_table.ajax.reload();
-//		_table.draw(false);
+        //_table.ajax.reload();
+        //_table.draw(false);
         _table.draw();
     });
 
@@ -134,22 +119,12 @@ $(function (){
         _table.draw();
     });
 
-    $("#btn-save-add").click(function(){
-        userManage.addItemSubmit();
-    });
-
-    $("#btn-save-edit").click(function(){
-        userManage.editItemSubmit();
-    });
-    */
-
     //行点击事件
     $("tbody",$table).on("click","tr",function(event) {
         $(this).addClass("active").siblings().removeClass("active");
         //获取该行对应的数据
-       // var item = _table.row($(this).closest('tr')).data();
-        //userManage.currentItem = item;
-        //userManage.showItemDetail(item);
+        // var item = _table.row($(this).closest('tr')).data();
+        //$(this).closest('tr').addClass("active").siblings().removeClass("active");
     });
 
     $table.on("change",":checkbox",function() {
@@ -165,43 +140,16 @@ $(function (){
         //点击单元格即点击复选框
         !$(event.target).is(":checkbox") && $(":checkbox",this).trigger("click");
     });
-       /* .on("click",".btn-edit",function() {
-        //点击编辑按钮
-        var item = _table.row($(this).closest('tr')).data();
-        $(this).closest('tr').addClass("active").siblings().removeClass("active");
-        userManage.currentItem = item;
-        userManage.editItemInit(item);
-    }).on("click",".btn-del",function() {
-        //点击删除按钮
-        var item = _table.row($(this).closest('tr')).data();
-        $(this).closest('tr').addClass("active").siblings().removeClass("active");
-        userManage.deleteItem([item]);
-    });*/
-    /*
+
     $("#toggle-advanced-search").click(function(){
-        $("i",this).toggleClass("fa-angle-double-down fa-angle-double-up");
+        $("i",this).toggleClass("Hui-iconfont Hui-iconfont");
         $("#div-advanced-search").slideToggle("fast");
     });
-
-    $("#btn-info-content-collapse").click(function(){
-        $("i",this).toggleClass("fa-minus fa-plus");
-        $("span",this).toggle();
-        $("#user-view .info-content").slideToggle("fast");
-    });
-
-    $("#btn-view-edit").click(function(){
-        userManage.editItemInit(userManage.currentItem);
-    });
-
-    $(".btn-cancel").click(function(){
-        userManage.showItemDetail(userManage.currentItem);
-    });
-    */
 });
 
 var userManage = {
     //currentItem : null,
-    //fuzzySearch : true,
+    fuzzySearch : true,
     getQueryCondition : function(data) {
         var param = {};
         //组装排序参数
@@ -229,17 +177,16 @@ var userManage = {
             param.orderDir = data.order[0].dir;
         }
         //组装查询参数
-        /*param.fuzzySearch = userManage.fuzzySearch;
+        param.fuzzySearch = userManage.fuzzySearch;
         if (userManage.fuzzySearch) {
             param.fuzzy = $("#fuzzy-search").val();
         }else{
-            param.name = $("#name-search").val();
-            param.position = $("#position-search").val();
-            param.office = $("#office-search").val();
-            param.extn = $("#extn-search").val();
-            param.status = $("#status-search").val();
-            param.role = $("#role-search").val();
-        }*/
+            param.uname = $("#name-search").val();
+            param.phone = $("#phone-search").val();
+            param.sex = $("#sex-search").val();
+            //param.status = $("#status-search").val();
+            //param.role = $("#role-search").val();
+        }
 
         //组装分页参数
         param.startIndex = data.start;
@@ -249,66 +196,6 @@ var userManage = {
 
         return param;
     }
-    /*
-    showItemDetail : function(item) {
-        $("#user-view").show().siblings(".info-block").hide();
-        if (!item) {
-            $("#user-view .prop-value").text("");
-            return;
-        }
-        $("#name-view").text(item.name);
-        $("#position-view").text(item.position);
-        $("#salary-view").text(item.salary);
-        $("#start-date-view").text(item.start_date);
-        $("#office-view").text(item.office);
-        $("#extn-view").text(item.extn);
-        $("#role-view").text(item.role?"管理员":"操作员");
-        $("#status-view").text(item.status?"在线":"离线");
-    },
-    addItemInit : function() {
-        $("#form-add")[0].reset();
-
-        $("#user-add").show().siblings(".info-block").hide();
-    },
-    editItemInit : function(item) {
-        if (!item) {
-            return;
-        }
-        $("#form-edit")[0].reset();
-        $("#title-edit").text(item.name);
-        $("#name-edit").val(item.name);
-        $("#position-edit").val(item.position);
-        $("#salary-edit").val(item.salary);
-        $("#start-date-edit").val(item.start_date);
-        $("#office-edit").val(item.office);
-        $("#extn-edit").val(item.extn);
-        $("#role-edit").val(item.role);
-        $("#user-edit").show().siblings(".info-block").hide();
-    },
-    addItemSubmit : function() {
-        $.dialog.tips('保存当前添加用户');
-    },
-    editItemSubmit : function() {
-        $.dialog.tips('保存当前编辑用户');
-    },
-    deleteItem : function(selectedItems) {
-        var message;
-        if (selectedItems&&selectedItems.length) {
-            if (selectedItems.length == 1) {
-                message = "确定要删除 '"+selectedItems[0].name+"' 吗?";
-
-            }else{
-                message = "确定要删除选中的"+selectedItems.length+"项记录吗?";
-            }
-            $.dialog.confirmDanger(message, function(){
-                $.dialog.tips('执行删除操作');
-            });
-        }else{
-            $.dialog.tips('请先选中要操作的行');
-        }
-    }
-    */
-
 }
 
 /*用户-添加*/
