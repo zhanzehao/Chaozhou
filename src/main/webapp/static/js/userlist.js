@@ -182,7 +182,7 @@ var userManage = {
             param.fuzzy = $("#fuzzy-search").val();
         }else{
             param.uname = $("#name-search").val();
-            param.phone = $("#phone-search").val();
+            param.phoneNumber = $("#phone-search").val();
             param.sex = $("#sex-search").val();
             //param.status = $("#status-search").val();
             //param.role = $("#role-search").val();

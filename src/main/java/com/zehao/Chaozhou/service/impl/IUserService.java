@@ -7,6 +7,7 @@ import com.zehao.Chaozhou.param.UserQueryParam;
 import com.zehao.Chaozhou.pojo.Tbuser;
 import com.zehao.Chaozhou.pojo.TbuserExample;
 import com.zehao.Chaozhou.service.UserService;
+import com.zehao.Chaozhou.utils.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,9 +44,9 @@ public class IUserService implements UserService {
         if("true".equals(fuzzy)){
             String searchValue = userQueryParam.getFuzzy();
             if (searchValue!=null&&!searchValue.equals("")) {
-                criteria.andUnameLike("%"+searchValue+"%");
-                criteria.andPhoneNumberLike("%"+searchValue+"%");
-                criteria.andSexLike("%"+searchValue+"%");
+                tbuserExample.or().andUnameLike("%"+searchValue+"%");
+                tbuserExample.or().andPhoneNumberLike("%"+searchValue+"%");
+                tbuserExample.or().andSexLike("%"+searchValue+"%");
             }
         }else {
             String uname = userQueryParam.getUname();
@@ -53,6 +54,7 @@ public class IUserService implements UserService {
                 criteria.andUnameLike("%"+uname+"%");
             }
             String phoneNumber = userQueryParam.getPhoneNumber();
+            Logger.info(phoneNumber);
             if (phoneNumber!=null&&!phoneNumber.equals("")) {
                 criteria.andPhoneNumberLike("%"+phoneNumber+"%");
             }
