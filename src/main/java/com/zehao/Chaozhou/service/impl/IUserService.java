@@ -22,6 +22,8 @@ public class IUserService implements UserService {
     @Autowired
     private TbuserMapper tbuserMapper;
 
+    private Gson gson = new GsonBuilder().serializeNulls().create();
+
     @Override
     public String queryAllUser(UserQueryParam userQueryParam) {
 
@@ -71,12 +73,26 @@ public class IUserService implements UserService {
         List<Tbuser> tbuserList = tbuserMapper.selectByExample(tbuserExample);
         total = String.valueOf(tbuserMapper.countByExample(tbuserExample));
 
-        Gson gson = new GsonBuilder().serializeNulls().create();
-
         Map<Object,Object> info = new HashMap<>();
         info.put("pageData",tbuserList);
         info.put("total",total);
         info.put("draw",draw);
+
+        return gson.toJson(info);
+    }
+
+    @Override
+    public String deleteUserById(String id) {
+        int result = tbuserMapper.deleteByPrimaryKey(Long.valueOf(id));
+        String status;
+        if (result == 0) {
+            status = "fault";
+        } else {
+            status = "success";
+        }
+
+        Map<Object,Object> info = new HashMap<>();
+        info.put("status",status);
 
         return gson.toJson(info);
     }

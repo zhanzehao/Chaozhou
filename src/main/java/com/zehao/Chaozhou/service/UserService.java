@@ -9,4 +9,6 @@ import com.zehao.Chaozhou.param.UserQueryParam;
 public interface UserService {
 
     String queryAllUser(UserQueryParam userQueryParam);
+
+    String deleteUserById(String id);
 }

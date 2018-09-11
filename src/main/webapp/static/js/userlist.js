@@ -91,8 +91,8 @@ $(function (){
             //给当前行某列加样式
             //$('td', row).eq(3).addClass(data.status?"text-success":"text-error");
             //不使用render，改用jquery文档操作呈现单元格
-            var $btnEdit = $('<a title=\'编辑\' href=\'javascript:;\' onclick=member_edit(\'编辑\',\'member-add.html\',\'4\',\'\',\'510\') class=\'ml-5\' style=\'text-decoration:none\'><i class=\'Hui-iconfont\'>&#xe6df;</i></a>');
-            var $btnDel = $('<a title=\'删除\' href=\'javascript:;\'  onclick=member_del(this,\'1\') class=\'ml-5\' style=\'text-decoration:none\'><i class=\'Hui-iconfont\'>&#xe6e2;</i></a>');
+            var $btnEdit = $('<a title=\'编辑\' href=\'javascript:;\' onclick=member_edit(\'编辑\',\'member-add.html\','+data.uid+',\'\',\'510\') class=\'ml-5\' style=\'text-decoration:none\'><i class=\'Hui-iconfont\'>&#xe6df;</i></a>');
+            var $btnDel = $('<a title=\'删除\' href=\'javascript:;\'  onclick=member_del(this,'+data.uid+') class=\'ml-5\' style=\'text-decoration:none\'><i class=\'Hui-iconfont\'>&#xe6e2;</i></a>');
             $('td', row).eq(7).append($btnEdit).append($btnDel);
 
         },
@@ -196,7 +196,7 @@ var userManage = {
 
         return param;
     }
-}
+};
 
 /*用户-添加*/
 function member_add(title,url,w,h){
@@ -210,23 +210,27 @@ function member_show(title,url,id,w,h){
 function member_edit(title,url,id,w,h){
     layer_show(title,url,w,h);
 }
-/*密码-修改*/
-function change_password(title,url,id,w,h){
-    layer_show(title,url,w,h);
-}
+
 /*用户-删除*/
 function member_del(obj,id) {
     layer.confirm('确认要删除吗？', function (index) {
         $.ajax({
             type: 'POST',
-            url: '',
-            dataType: 'json',
+            url: 'http://127.0.0.1:8080/Chaozhou/deleteUserById',
+            data: { id : id },
+            dataType: "json",
             success: function (data) {
-                $(obj).parents("tr").remove();
-                layer.msg('已删除!', {icon: 1, time: 1000});
+                if (data.status == "success") {
+                    $(obj).parents("tr").remove();
+                    layer.msg('已删除!', {icon: 1, time: 1000});
+                    _table.draw();
+                } else {
+                    layer.msg('删除失败!', {icon: 1, time: 1000});
+                }
             },
             error: function (data) {
                 console.log(data.msg);
+                layer.msg('删除失败!', {icon: 1, time: 1000});
             },
         });
     })
