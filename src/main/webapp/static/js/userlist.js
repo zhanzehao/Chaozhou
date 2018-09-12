@@ -145,6 +145,9 @@ $(function (){
         $("i",this).toggleClass("Hui-iconfont Hui-iconfont");
         $("#div-advanced-search").slideToggle("fast");
     });
+
+    //返回页面顶部
+    //$.Huitotop();
 });
 
 var userManage = {
@@ -208,7 +211,8 @@ function member_show(title,url,id,w,h){
 }
 /*用户-编辑*/
 function member_edit(title,url,id,w,h){
-    layer_show(title,url,w,h);
+    var urlwith = url+"?id="+id;
+    layer_show(title,urlwith,w,h);
 }
 
 /*用户-删除*/

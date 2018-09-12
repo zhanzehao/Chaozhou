@@ -82,6 +82,33 @@ public class IUserService implements UserService {
     }
 
     @Override
+    public String queryUserById(String id) {
+        Tbuser tbuser = tbuserMapper.selectByPrimaryKey(Long.valueOf(id));
+        Logger.info(tbuser.toString());
+
+        Map<Object,Object> info = new HashMap<>();
+        info.put("user",tbuser);
+
+        return gson.toJson(info);
+    }
+
+    @Override
+    public String updateUserById(Tbuser tbuser) {
+        int result = tbuserMapper.updateByPrimaryKeySelective(tbuser);
+        String status;
+        if (result == 0) {
+            status = "fault";
+        } else {
+            status = "success";
+        }
+
+        Map<Object,Object> info = new HashMap<>();
+        info.put("status",status);
+
+        return gson.toJson(info);
+    }
+
+    @Override
     public String deleteUserById(String id) {
         int result = tbuserMapper.deleteByPrimaryKey(Long.valueOf(id));
         String status;

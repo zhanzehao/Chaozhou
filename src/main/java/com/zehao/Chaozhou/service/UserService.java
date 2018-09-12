@@ -1,6 +1,7 @@
 package com.zehao.Chaozhou.service;
 
 import com.zehao.Chaozhou.param.UserQueryParam;
+import com.zehao.Chaozhou.pojo.Tbuser;
 
 
 /**
@@ -9,6 +10,10 @@ import com.zehao.Chaozhou.param.UserQueryParam;
 public interface UserService {
 
     String queryAllUser(UserQueryParam userQueryParam);
+
+    String queryUserById(String id);
+
+    String updateUserById(Tbuser tbuser);
 
     String deleteUserById(String id);
 }

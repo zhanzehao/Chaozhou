@@ -16,3 +16,4 @@ LICENSE
 target/
 src/resources/config/db.properties
 .idea/dictionaries/MS.xml
+.idea/dictionaries/admin.xml
