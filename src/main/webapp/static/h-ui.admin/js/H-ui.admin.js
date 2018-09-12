@@ -202,7 +202,11 @@ function layer_show(title,url,w,h){
 		maxmin: true,
 		shade:0.4,
 		title: title,
-		content: url
+		content: url,
+		end: function () {
+			location.reload();
+			layer.msg('修改成功', {icon: 6, time: 0});
+		}
 	});
 }
 /*关闭弹出框口*/
