@@ -2,6 +2,8 @@
   <dictionary name="admin">
     <words>
       <w>eachid</w>
+      <w>useradd</w>
+      <w>useredit</w>
       <w>zehao</w>
     </words>
   </dictionary>

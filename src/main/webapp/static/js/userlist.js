@@ -1,9 +1,9 @@
 $(function (){
-    var $wrapper = $('#mt-20');
+    var $wrapper = $('#div-table-container');
     var $table = $('#UserId');
 
     var _table = $table.dataTable($.extend(true,{},CONSTANT.DATA_TABLES.DEFAULT_OPTION, {
-        ajax : function(data, callback, settings) {//ajax配置为function,手动调用异步查询
+        ajax : function(data, callback, settings) { //ajax配置为function,手动调用异步查询
             //手动控制遮罩
             $wrapper.spinModal();
             //封装请求参数
@@ -156,21 +156,15 @@ $(function (){
             var uid = item.uid;
             idArray.push(uid);
         });
-        console.log(idArray);
         if(idArray.length<=0){
             layer.msg('请选择要删除的用户!', {icon: 1, time: 1000});
         }else{
-            layer.confirm('确认批量删除对话框', '确定进行批量删除吗？', function(r){
-                if (r){
-                    member_del(idArray);
-                }
-            });
+            member_del(this,idArray);
         }
-    }
-})
+    });
 
-//返回页面顶部
-//$.Huitotop();
+    //返回页面顶部
+    //$.Huitotop();
 });
 
 var userManage = {
@@ -244,13 +238,15 @@ function member_del(obj,ids) {
         $.ajax({
             type: 'POST',
             url: 'http://127.0.0.1:8080/Chaozhou/deleteUserById',
-            data: { id : ids },
+            data: { "id" : ids },
             dataType: "json",
+            traditional: true,
             success: function (data) {
                 if (data.status == "success") {
                     $(obj).parents("tr").remove();
-                    layer.msg('已删除!', {icon: 1, time: 1000});
-                    _table.draw();
+                    layer.msg('已删除!', {icon: 1, time: 400}, function() {
+                        location.reload();
+                    });
                 } else {
                     layer.msg('删除失败!', {icon: 1, time: 1000});
                 }
