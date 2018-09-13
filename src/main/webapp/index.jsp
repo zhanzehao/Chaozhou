@@ -35,7 +35,7 @@
 							<li><a href="javascript:;" onclick="article_add('添加历史','article-add.html')"><i class="Hui-iconfont">&#xe616;</i> 历史</a></li>
 							<li><a href="javascript:;" onclick="picture_add('添加景点','picture-add.html')"><i class="Hui-iconfont">&#xe613;</i> 景点</a></li>
 							<li><a href="javascript:;" onclick="product_add('添加特产','product-add.html')"><i class="Hui-iconfont">&#xe620;</i> 特产</a></li>
-							<li><a href="javascript:;" onclick="member_add('添加商家','member-add.html','','510')"><i class="Hui-iconfont">&#xe66a;</i> 商家</a></li>
+							<li><a href="javascript:;" onclick="member_add('添加商家','member-edit.html','','510')"><i class="Hui-iconfont">&#xe66a;</i> 商家</a></li>
 							<li><a href="javascript:;" onclick="product_add('添加酒店','product-add.html')"><i class="Hui-iconfont">&#xe625;</i> 酒店</a></li>
 					</ul>
 				</li>

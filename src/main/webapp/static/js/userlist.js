@@ -44,7 +44,8 @@ $(function (){
             CONSTANT.DATA_TABLES.COLUMN.CHECKBOX,
             {
                 data: "uid",
-                width: "70px"
+                width: "70px",
+                className: "uid"
             },
             {
                 //className : "text-overflow",	//文字过长时用省略号显示，CSS实现
@@ -91,7 +92,7 @@ $(function (){
             //给当前行某列加样式
             //$('td', row).eq(3).addClass(data.status?"text-success":"text-error");
             //不使用render，改用jquery文档操作呈现单元格
-            var $btnEdit = $('<a title=\'编辑\' href=\'javascript:;\' onclick=member_edit(\'编辑\',\'member-add.html\','+data.uid+',\'\',\'510\') class=\'ml-5\' style=\'text-decoration:none\'><i class=\'Hui-iconfont\'>&#xe6df;</i></a>');
+            var $btnEdit = $('<a title=\'编辑\' href=\'javascript:;\' onclick=member_edit(\'编辑\',\'member-edit.html\','+data.uid+',\'\',\'510\') class=\'ml-5\' style=\'text-decoration:none\'><i class=\'Hui-iconfont\'>&#xe6df;</i></a>');
             var $btnDel = $('<a title=\'删除\' href=\'javascript:;\'  onclick=member_del(this,'+data.uid+') class=\'ml-5\' style=\'text-decoration:none\'><i class=\'Hui-iconfont\'>&#xe6e2;</i></a>');
             $('td', row).eq(7).append($btnEdit).append($btnDel);
 
@@ -146,8 +147,30 @@ $(function (){
         $("#div-advanced-search").slideToggle("fast");
     });
 
-    //返回页面顶部
-    //$.Huitotop();
+    $("#deleteSome").click(function() {
+        var idArray = new Array();
+        var check = $("input[name='ids']:checked");//选中的复选框
+        check.each(function(){
+            var row = $(this).parent("td").parent("tr");
+            var item = _table.row(row).data();
+            var uid = item.uid;
+            idArray.push(uid);
+        });
+        console.log(idArray);
+        if(idArray.length<=0){
+            layer.msg('请选择要删除的用户!', {icon: 1, time: 1000});
+        }else{
+            layer.confirm('确认批量删除对话框', '确定进行批量删除吗？', function(r){
+                if (r){
+                    member_del(idArray);
+                }
+            });
+        }
+    }
+})
+
+//返回页面顶部
+//$.Huitotop();
 });
 
 var userManage = {
@@ -216,12 +239,12 @@ function member_edit(title,url,id,w,h){
 }
 
 /*用户-删除*/
-function member_del(obj,id) {
+function member_del(obj,ids) {
     layer.confirm('确认要删除吗？', function (index) {
         $.ajax({
             type: 'POST',
             url: 'http://127.0.0.1:8080/Chaozhou/deleteUserById',
-            data: { id : id },
+            data: { id : ids },
             dataType: "json",
             success: function (data) {
                 if (data.status == "success") {

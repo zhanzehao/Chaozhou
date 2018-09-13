@@ -93,6 +93,22 @@ public class IUserService implements UserService {
     }
 
     @Override
+    public String insertUser(Tbuser tbuser) {
+        int result = tbuserMapper.insertSelective(tbuser);
+        String status;
+        if (result == 0) {
+            status = "fault";
+        } else {
+            status = "success";
+        }
+
+        Map<Object,Object> info = new HashMap<>();
+        info.put("status",status);
+
+        return gson.toJson(info);
+    }
+
+    @Override
     public String updateUserById(Tbuser tbuser) {
         int result = tbuserMapper.updateByPrimaryKeySelective(tbuser);
         String status;
@@ -109,13 +125,16 @@ public class IUserService implements UserService {
     }
 
     @Override
-    public String deleteUserById(String id) {
-        int result = tbuserMapper.deleteByPrimaryKey(Long.valueOf(id));
-        String status;
-        if (result == 0) {
-            status = "fault";
-        } else {
-            status = "success";
+    public String deleteUserById(String[] id) {
+        String status = "fault";
+
+        for (String eachid : id) {
+            int result = tbuserMapper.deleteByPrimaryKey(Long.valueOf(eachid));
+            if (result == 0) {
+                status = "fault";
+            } else {
+                status = "success";
+            }
         }
 
         Map<Object,Object> info = new HashMap<>();

@@ -13,7 +13,9 @@ public interface UserService {
 
     String queryUserById(String id);
 
+    String insertUser(Tbuser tbuser);
+
     String updateUserById(Tbuser tbuser);
 
-    String deleteUserById(String id);
+    String deleteUserById(String[] id);
 }

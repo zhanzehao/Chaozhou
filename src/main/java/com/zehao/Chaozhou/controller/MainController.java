@@ -31,6 +31,12 @@ public class MainController {
         return userService.queryUserById(id);
     }
 
+    @RequestMapping(value = "insertUser",produces = "application/json;charset=utf-8")
+    @ResponseBody
+    public String insertUser(@RequestBody Tbuser tbuser) {
+        return userService.insertUser(tbuser);
+    }
+
     @RequestMapping(value = "updateUserById",produces = "application/json;charset=utf-8")
     @ResponseBody
     public String updateUserById(@RequestBody Tbuser tbuser) {
@@ -39,7 +45,7 @@ public class MainController {
 
     @RequestMapping(value = "/deleteUserById",produces = "application/json;charset=utf-8")
     @ResponseBody
-    public String deleteUserById(@RequestParam String id) {
+    public String deleteUserById(@RequestParam String[] id) {
         return userService.deleteUserById(id);
     }
 }
