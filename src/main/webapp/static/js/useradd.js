@@ -58,19 +58,18 @@ $(function(){
             param.password = $(password).val();
             param.birthday = $(birthday).val();
 
-            var head = $("#uploadfile")[0].files;
-            console.log($("#uploadfile")[0].files);
+            var head = document.getElementById("fileinput");
+            console.log(head.files[0]);
 
             var formData = new FormData();
             formData.append("tbuser",JSON.stringify(param));
-            formData.append("file", head);
+            formData.append("file", head.files[0]);
 
-            console.log(formData);
             $.ajax({
                 type: 'POST',
                 url: 'http://127.0.0.1:8080/Chaozhou/insertUser',
                 data: formData,
-                dataType: "json",
+                //dataType: "json",
                 cache: false,
                 processData:false,
                 contentType:false,
