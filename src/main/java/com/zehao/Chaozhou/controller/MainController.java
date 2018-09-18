@@ -1,16 +1,15 @@
 package com.zehao.Chaozhou.controller;
 
-import com.zehao.Chaozhou.param.UserQueryParam;
+import com.zehao.Chaozhou.common.Vo.UserQueryParam;
 import com.zehao.Chaozhou.pojo.Tbuser;
 import com.zehao.Chaozhou.service.UserService;
-import com.zehao.Chaozhou.utils.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 
 @Controller
@@ -31,16 +30,16 @@ public class MainController {
         return userService.queryUserById(id);
     }
 
-    @RequestMapping(value = "insertUser",produces = "application/json;charset=utf-8")
+    @RequestMapping(value = "insertUser", method= RequestMethod.POST, produces="application/json; charset=utf-8")
     @ResponseBody
-    public String insertUser(@RequestBody Tbuser tbuser) {
-        return userService.insertUser(tbuser);
+    public String insertUser(@RequestBody Tbuser tbuser,@RequestParam(value = "file", required=false) MultipartFile file) throws IOException {
+        return userService.insertUser(tbuser, file);
     }
 
     @RequestMapping(value = "updateUserById",produces = "application/json;charset=utf-8")
     @ResponseBody
-    public String updateUserById(@RequestBody Tbuser tbuser) {
-        return userService.updateUserById(tbuser);
+    public String updateUserById(@RequestBody Tbuser tbuser, MultipartFile file) throws IOException {
+        return userService.updateUserById(tbuser, file);
     }
 
     @RequestMapping(value = "/deleteUserById",produces = "application/json;charset=utf-8")

@@ -1,4 +1,4 @@
-package com.zehao.Chaozhou.param;
+package com.zehao.Chaozhou.common.Vo;
 
 public class UserQueryParam {
 

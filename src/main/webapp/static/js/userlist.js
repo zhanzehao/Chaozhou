@@ -254,7 +254,7 @@ function member_del(obj,ids) {
             error: function (data) {
                 console.log(data.msg);
                 layer.msg('删除失败!', {icon: 1, time: 1000});
-            },
+            }
         });
     })
 }

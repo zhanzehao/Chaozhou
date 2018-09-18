@@ -1,7 +1,10 @@
 package com.zehao.Chaozhou.service;
 
-import com.zehao.Chaozhou.param.UserQueryParam;
+import com.zehao.Chaozhou.common.Vo.UserQueryParam;
 import com.zehao.Chaozhou.pojo.Tbuser;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 
 /**
@@ -13,9 +16,9 @@ public interface UserService {
 
     String queryUserById(String id);
 
-    String insertUser(Tbuser tbuser);
+    String insertUser(Tbuser tbuser, MultipartFile file) throws IOException;
 
-    String updateUserById(Tbuser tbuser);
+    String updateUserById(Tbuser tbuser, MultipartFile file) throws IOException;
 
     String deleteUserById(String[] id);
 }

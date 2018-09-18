@@ -1,16 +1,21 @@
 package com.zehao.Chaozhou.service.impl;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+import com.zehao.Chaozhou.common.GsonSingleton;
 import com.zehao.Chaozhou.mapper.TbuserMapper;
-import com.zehao.Chaozhou.param.UserQueryParam;
+import com.zehao.Chaozhou.common.Vo.UserQueryParam;
 import com.zehao.Chaozhou.pojo.Tbuser;
 import com.zehao.Chaozhou.pojo.TbuserExample;
 import com.zehao.Chaozhou.service.UserService;
+import com.zehao.Chaozhou.utils.COSUtil;
 import com.zehao.Chaozhou.utils.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +27,7 @@ public class IUserService implements UserService {
     @Autowired
     private TbuserMapper tbuserMapper;
 
-    private Gson gson = new GsonBuilder().serializeNulls().create();
+    private Gson gson = GsonSingleton.getInstance();
 
     @Override
     public String queryAllUser(UserQueryParam userQueryParam) {
@@ -93,8 +98,20 @@ public class IUserService implements UserService {
     }
 
     @Override
-    public String insertUser(Tbuser tbuser) {
+    public String insertUser(Tbuser tbuser, MultipartFile file) throws IOException {
+
+        String upload = COSUtil.upload(file);
+        JsonElement je = new JsonParser().parse(upload);
+        JsonElement imgstatus = je.getAsJsonObject().get("status");
+        if(imgstatus != null && imgstatus.getAsLong() == 0) {
+            JsonElement data = je.getAsJsonObject().get("data");
+            if(data != null && data.getAsString() != null) {
+                Logger.info(data.getAsString());
+                tbuser.setHead(data.getAsString());
+            }
+        }
         int result = tbuserMapper.insertSelective(tbuser);
+
         String status;
         if (result == 0) {
             status = "fault";
@@ -109,7 +126,17 @@ public class IUserService implements UserService {
     }
 
     @Override
-    public String updateUserById(Tbuser tbuser) {
+    public String updateUserById(Tbuser tbuser, MultipartFile file) throws IOException {
+
+        String upload = COSUtil.upload(file);
+        JsonElement je = new JsonParser().parse(upload);
+        JsonElement imgstatus = je.getAsJsonObject().get("status");
+        if(imgstatus != null && imgstatus.getAsLong() == 0) {
+            JsonElement data = je.getAsJsonObject().get("data");
+            if(data != null && data.getAsString() != null) {
+                tbuser.setHead(data.getAsString());
+            }
+        }
         int result = tbuserMapper.updateByPrimaryKeySelective(tbuser);
         String status;
         if (result == 0) {

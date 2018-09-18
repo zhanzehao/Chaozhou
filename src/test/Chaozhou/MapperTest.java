@@ -2,11 +2,9 @@ package Chaozhou;
 
 import com.zehao.Chaozhou.mapper.TbuserMapper;
 import com.zehao.Chaozhou.pojo.Tbuser;
-import com.zehao.Chaozhou.utils.DateConverter;
 import com.zehao.Chaozhou.utils.Logger;
 import org.junit.runner.RunWith;
 import org.junit.Test;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -31,12 +29,5 @@ public class MapperTest {
         for (Tbuser tbuser: tbuserList) {
             System.out.println(tbuser);
         }
-    }
-
-    @Test
-    public void testDateConvert() {
-        DateConverter dateConverter = new DateConverter();
-        Date date = dateConverter.convert("20151202");
-        System.out.println(date);
     }
 }

@@ -50,7 +50,7 @@ $(function(){
         focusCleanup:true,
         success:"valid",
         submitHandler:function(form){
-            var index = parent.layer.getFrameIndex(window.name);
+            //var index = parent.layer.getFrameIndex(window.name);
             var param = {};
             param.uname = $(username).val();
             param.phoneNumber = $(mobile).val();
@@ -58,12 +58,22 @@ $(function(){
             param.password = $(password).val();
             param.birthday = $(birthday).val();
 
+            var head = $("#uploadfile")[0].files;
+            console.log($("#uploadfile")[0].files);
+
+            var formData = new FormData();
+            formData.append("tbuser",JSON.stringify(param));
+            formData.append("file", head);
+
+            console.log(formData);
             $.ajax({
                 type: 'POST',
                 url: 'http://127.0.0.1:8080/Chaozhou/insertUser',
-                data: JSON.stringify(param),
+                data: formData,
                 dataType: "json",
-                contentType:'application/json;charset=UTF-8',
+                cache: false,
+                processData:false,
+                contentType:false,
                 success: function(data) {
                     if (data.status == "success") {
                         parent.layer.msg('增加成功', {icon: 6, time: 400}, function() {
