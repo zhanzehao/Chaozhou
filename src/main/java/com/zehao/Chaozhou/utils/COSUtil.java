@@ -27,7 +27,8 @@ public class COSUtil {
     private static Gson gson = GsonSingleton.getInstance();
 
     //单图片上传
-    public static String upload(MultipartFile file) throws IOException {
+    public static String upload(MultipartFile file,Picture picture) throws IOException {
+        Logger.info(picture.name());
         JsonResult result = new JsonResult();
         result.setStatus(-1);
 
@@ -51,13 +52,13 @@ public class COSUtil {
             String uuid = UUID.randomUUID().toString().replaceAll("-", "");
 
             // 当前日期
-            Date date = new Date();
-            DateConvert util = new DateConvert();
-            String dd = util.toString(date);
+            //Date date = new Date();
+            //DateConvert util = new DateConvert();
+            //String dd = util.toString(date);
 
             // 目标文件名
             //String key = "/" + dd + "/" + uuid + "." + split[1];
-            String key = "/" + dd + "/" + uuid + ".jpg";
+            String key = "/" + picture.name() + "/" + uuid + ".jpg";
 
             ObjectMetadata objectMetadata = new ObjectMetadata();
             // 从输入流上传必须制定content length, 否则http客户端可能会缓存所有数据，存在内存OOM的情况

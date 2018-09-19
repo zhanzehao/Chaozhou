@@ -1,5 +1,5 @@
 /*常量*/
-var pictureBaseUrl = "https://chouzhou-1256247322.cos-website.ap-guangzhou.myqcloud.com/";
+var pictureBaseUrl = "https://chaozhou-1257279578.cos.ap-chengdu.myqcloud.com/";
 var CONSTANT = {
     DATA_TABLES : {
         DEFAULT_OPTION : { //DataTables初始化选项

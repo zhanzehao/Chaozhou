@@ -1,6 +1,6 @@
 $(function(){
     var id = getQueryString("id");
-    var pictureBaseUrl = "https://chouzhou-1256247322.cos-website.ap-guangzhou.myqcloud.com/";
+    var pictureBaseUrl = "https://chaozhou-1257279578.cos.ap-chengdu.myqcloud.com/";
     $.ajax({
         type: 'POST',
         url: 'http://127.0.0.1:8080/Chaozhou/queryUserById',
@@ -60,19 +60,24 @@ $(function(){
         focusCleanup:true,
         success:"valid",
         submitHandler:function(form){
-            var index = parent.layer.getFrameIndex(window.name);
-            var param = {};
-            param.uid = id;
-            param.uname = $(username).val();
-            param.phoneNumber = $(mobile).val();
-            param.sex = $('input[name="sex"]:checked').val();
-            param.birthday = $(birthday).val();
+            //var index = parent.layer.getFrameIndex(window.name);
+            var formData = new FormData();
+            var head = document.getElementById("fileinput");
+            formData.append("file", head.files[0]);
+            formData.append("uid", id);
+            formData.append("uname",$("#username").val());
+            formData.append("phoneNumber",$("#mobile").val());
+            formData.append("sex",$('input[name="sex"]:checked').val());
+            formData.append("birthday",$("#birthday").val());
+
             $.ajax({
                 type: 'POST',
                 url: 'http://127.0.0.1:8080/Chaozhou/updateUserById',
-                data: JSON.stringify(param),
-                dataType: "json",
-                contentType:'application/json;charset=UTF-8',
+                data: formData,
+                //dataType: "json",
+                cache: false,
+                processData:false,
+                contentType:false,
                 success: function(data) {
                     if (data.status == "success") {
                         parent.layer.msg('修改成功！', {icon: 6, time: 400}, function() {
@@ -96,4 +101,39 @@ function getQueryString(name) {
     var r = window.location.search.substr(1).match(reg);
     if (r != null) return unescape(r[2]);
     return null;
+}
+
+//图片预览功能
+function setImagePreview(avalue) {
+    var docObj = document.getElementById("fileinput");
+    var imgObjPreview = document.getElementById("head");
+    if(docObj.files && docObj.files[0])
+    {
+        //火狐下，直接设img属性
+        imgObjPreview.style.display = 'block';
+        imgObjPreview.style.width = '110px';
+        imgObjPreview.style.height = '100px';
+        //imgObjPreview.src = docObj.files[0].getAsDataURL();
+        //火狐7以上版本不能用上面的getAsDataURL()方式获取，需要一下方式
+        imgObjPreview.src = window.URL.createObjectURL(docObj.files[0]);
+    }
+    else
+    {
+        //IE下，使用滤镜
+        docObj.select();
+        var imgSrc = document.selection.createRange().text;
+        var localImagId = document.getElementById("localImag"); //必须设置初始大小
+        localImagId.style.width = "110px";
+        localImagId.style.height = "100px"; //图片异常的捕捉，防止用户修改后缀来伪造图片
+        try {
+            localImagId.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale)";
+            localImagId.filters.item("DXImageTransform.Microsoft.AlphaImageLoader").src = imgSrc;
+        } catch(e) {
+            alert("您上传的图片格式不正确，请重新选择!");
+            return false;
+        }
+        imgObjPreview.style.display = 'none';
+        document.selection.empty();
+    }
+    return true;
 }

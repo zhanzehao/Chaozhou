@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import java.io.IOException;
 
@@ -32,13 +33,28 @@ public class MainController {
 
     @RequestMapping(value = "insertUser", method= RequestMethod.POST, produces="application/json; charset=utf-8")
     @ResponseBody
-    public String insertUser(@RequestBody Tbuser tbuser,@RequestParam(value = "file", required=false) MultipartFile file) throws IOException {
+    public String insertUser(@RequestParam(value = "file", required=false) MultipartFile file,
+                             MultipartHttpServletRequest request) throws IOException {
+        Tbuser tbuser = new Tbuser();
+        tbuser.setUname(request.getParameter("uname"));
+        tbuser.setPhoneNumber(request.getParameter("phoneNumber"));
+        tbuser.setSex(request.getParameter("sex"));
+        tbuser.setPassword(request.getParameter("password"));
+        tbuser.setBirthday(request.getParameter("birthday"));
         return userService.insertUser(tbuser, file);
     }
 
     @RequestMapping(value = "updateUserById",produces = "application/json;charset=utf-8")
     @ResponseBody
-    public String updateUserById(@RequestBody Tbuser tbuser, MultipartFile file) throws IOException {
+    public String updateUserById(@RequestParam(value = "file", required=false) MultipartFile file,
+                                 MultipartHttpServletRequest request) throws IOException {
+        Tbuser tbuser = new Tbuser();
+        tbuser.setUid(Long.valueOf(request.getParameter("uid")));
+        tbuser.setUname(request.getParameter("uname"));
+        tbuser.setPhoneNumber(request.getParameter("phoneNumber"));
+        tbuser.setSex(request.getParameter("sex"));
+        tbuser.setPassword(request.getParameter("password"));
+        tbuser.setBirthday(request.getParameter("birthday"));
         return userService.updateUserById(tbuser, file);
     }
 

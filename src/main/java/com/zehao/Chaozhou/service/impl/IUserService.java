@@ -11,6 +11,7 @@ import com.zehao.Chaozhou.pojo.TbuserExample;
 import com.zehao.Chaozhou.service.UserService;
 import com.zehao.Chaozhou.utils.COSUtil;
 import com.zehao.Chaozhou.utils.Logger;
+import com.zehao.Chaozhou.utils.Picture;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -100,7 +101,7 @@ public class IUserService implements UserService {
     @Override
     public String insertUser(Tbuser tbuser, MultipartFile file) throws IOException {
 
-        String upload = COSUtil.upload(file);
+        String upload = COSUtil.upload(file, Picture.USERHEAD);
         JsonElement je = new JsonParser().parse(upload);
         JsonElement imgstatus = je.getAsJsonObject().get("status");
         if(imgstatus != null && imgstatus.getAsLong() == 0) {
@@ -128,7 +129,7 @@ public class IUserService implements UserService {
     @Override
     public String updateUserById(Tbuser tbuser, MultipartFile file) throws IOException {
 
-        String upload = COSUtil.upload(file);
+        String upload = COSUtil.upload(file,Picture.USERHEAD);
         JsonElement je = new JsonParser().parse(upload);
         JsonElement imgstatus = je.getAsJsonObject().get("status");
         if(imgstatus != null && imgstatus.getAsLong() == 0) {
