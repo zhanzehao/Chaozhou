@@ -35,6 +35,7 @@ public class MainController {
     @ResponseBody
     public String insertUser(@RequestParam(value = "file", required=false) MultipartFile file,
                              MultipartHttpServletRequest request) throws IOException {
+        //MultipartFile file1 = file;
         Tbuser tbuser = new Tbuser();
         tbuser.setUname(request.getParameter("uname"));
         tbuser.setPhoneNumber(request.getParameter("phoneNumber"));

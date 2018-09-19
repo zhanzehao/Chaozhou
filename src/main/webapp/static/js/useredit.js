@@ -61,6 +61,7 @@ $(function(){
         success:"valid",
         submitHandler:function(form){
             //var index = parent.layer.getFrameIndex(window.name);
+            //拼接后台需要的参数
             var formData = new FormData();
             var head = document.getElementById("fileinput");
             formData.append("file", head.files[0]);
@@ -78,6 +79,14 @@ $(function(){
                 cache: false,
                 processData:false,
                 contentType:false,
+                xhr:function(){ //获取ajaxSettings中的xhr对象，为它的upload属性绑定progress事件的处理函数
+                    myXhr = $.ajaxSettings.xhr();
+                    if(myXhr.upload){ //检查upload属性是否存在
+                        //绑定progress事件的回调函数
+                        myXhr.upload.addEventListener('progress',progressHandlingFunction, false);
+                    }
+                    return myXhr; //xhr对象返回给jQuery使用
+                },
                 success: function(data) {
                     if (data.status == "success") {
                         parent.layer.msg('修改成功！', {icon: 6, time: 400}, function() {
@@ -136,4 +145,17 @@ function setImagePreview(avalue) {
         document.selection.empty();
     }
     return true;
+}
+
+//上传进度回调函数：
+function progressHandlingFunction(e) {
+    if (e.lengthComputable) {
+        //显示进度条
+        var progress = document.getElementById("progress");
+        progress.style.display = "block";
+
+        $('#percent').attr({value : e.loaded, max : e.total}); //更新数据到进度条
+        var percent = e.loaded/e.total*100;
+        $('#percent').css('width', percent.toFixed(2) + "%");
+    }
 }

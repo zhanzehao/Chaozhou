@@ -100,16 +100,22 @@ public class IUserService implements UserService {
 
     @Override
     public String insertUser(Tbuser tbuser, MultipartFile file) throws IOException {
-
-        String upload = COSUtil.upload(file, Picture.USERHEAD);
-        JsonElement je = new JsonParser().parse(upload);
-        JsonElement imgstatus = je.getAsJsonObject().get("status");
-        if(imgstatus != null && imgstatus.getAsLong() == 0) {
-            JsonElement data = je.getAsJsonObject().get("data");
-            if(data != null && data.getAsString() != null) {
-                Logger.info(data.getAsString());
-                tbuser.setHead(data.getAsString());
+        /*
+            String upload = COSUtil.upload(file, Picture.USERHEAD);
+            JsonElement je = new JsonParser().parse(upload);
+            JsonElement imgstatus = je.getAsJsonObject().get("status");
+            if(imgstatus != null && imgstatus.getAsLong() == 0) {
+                JsonElement data = je.getAsJsonObject().get("data");
+                if(data != null && data.getAsString() != null) {
+                    Logger.info(data.getAsString());
+                    tbuser.setHead(data.getAsString());
+                }
             }
+        */
+        if (file != null) {
+            String head = COSUtil.upload(file,Picture.USERHEAD);
+            Logger.info(head);
+            tbuser.setHead(head);
         }
         int result = tbuserMapper.insertSelective(tbuser);
 
@@ -128,7 +134,7 @@ public class IUserService implements UserService {
 
     @Override
     public String updateUserById(Tbuser tbuser, MultipartFile file) throws IOException {
-
+        /*
         String upload = COSUtil.upload(file,Picture.USERHEAD);
         JsonElement je = new JsonParser().parse(upload);
         JsonElement imgstatus = je.getAsJsonObject().get("status");
@@ -137,7 +143,13 @@ public class IUserService implements UserService {
             if(data != null && data.getAsString() != null) {
                 tbuser.setHead(data.getAsString());
             }
+        }*/
+        if (!file.isEmpty()) {
+            String head = COSUtil.upload(file,Picture.USERHEAD);
+            Logger.info(head);
+            tbuser.setHead(head);
         }
+
         int result = tbuserMapper.updateByPrimaryKeySelective(tbuser);
         String status;
         if (result == 0) {
