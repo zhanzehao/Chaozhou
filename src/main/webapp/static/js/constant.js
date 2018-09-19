@@ -53,7 +53,7 @@ var CONSTANT = {
             },
             HEAD: function (data,type,row,meta) {
                 if (data != null && data != "") {
-                    return '<img width="110" height="100" class="picture-thumb" src="'+pictureBaseUrl+data+'">';
+                    return '<img width="130" height="100" class="picture-thumb" src="'+pictureBaseUrl+data+'">';
                 }
             }
         }

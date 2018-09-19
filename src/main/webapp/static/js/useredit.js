@@ -81,11 +81,15 @@ $(function(){
                 contentType:false,
                 xhr:function(){ //获取ajaxSettings中的xhr对象，为它的upload属性绑定progress事件的处理函数
                     myXhr = $.ajaxSettings.xhr();
-                    if(myXhr.upload){ //检查upload属性是否存在
-                        //绑定progress事件的回调函数
-                        myXhr.upload.addEventListener('progress',progressHandlingFunction, false);
+                    var head = $('#fileinput');
+                    if($.trim(head.val()) != ''){
+                        if(myXhr.upload){ //检查upload属性是否存在
+                            //绑定progress事件的回调函数
+                            myXhr.upload.addEventListener('progress',progressHandlingFunction, false);
+                        }
+                        return myXhr; //xhr对象返回给jQuery使用
                     }
-                    return myXhr; //xhr对象返回给jQuery使用
+                    return myXhr;
                 },
                 success: function(data) {
                     if (data.status == "success") {
@@ -149,11 +153,11 @@ function setImagePreview(avalue) {
 
 //上传进度回调函数：
 function progressHandlingFunction(e) {
-    if (e.lengthComputable) {
-        //显示进度条
-        var progress = document.getElementById("progress");
-        progress.style.display = "block";
+    //显示进度条
+    var progress = document.getElementById("progress");
+    progress.style.display = "block";
 
+    if (e.lengthComputable) {
         $('#percent').attr({value : e.loaded, max : e.total}); //更新数据到进度条
         var percent = e.loaded/e.total*100;
         $('#percent').css('width', percent.toFixed(2) + "%");

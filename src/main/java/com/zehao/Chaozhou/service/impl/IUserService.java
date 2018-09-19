@@ -144,7 +144,7 @@ public class IUserService implements UserService {
                 tbuser.setHead(data.getAsString());
             }
         }*/
-        if (!file.isEmpty()) {
+        if (file != null) {
             String head = COSUtil.upload(file,Picture.USERHEAD);
             Logger.info(head);
             tbuser.setHead(head);
