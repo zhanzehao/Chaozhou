@@ -85,6 +85,7 @@ public class COSUtil {
             }
             // 关闭客户端
             cosClient.shutdown();*/
+            Logger.info(key.substring(1));
             return key.substring(1);
         }
         //return gson.toJson(result);

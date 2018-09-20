@@ -4,8 +4,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.springframework.core.convert.converter.Converter;
-
 //转换时间的工具类
 public class DateConvert {
 

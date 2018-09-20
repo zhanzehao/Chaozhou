@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="lib/kindeditor/themes/default/default.css" />
+		<link rel="stylesheet" href="lib/kindeditor/plugins/code/prettify.css" />
+		<title>KindEditor</title>
+	</head>
+	<body>
+		<form method="post" action="http://127.0.0.1:8080/Chaozhou/upload" name="myform" enctype="multipart/form-data">
+    		<textarea type="text" name="uploadImage" style="height:600px;width:80%;" value=""></textarea>
+    		<button type="submit">提交</button>	
+		</form>
+		
+		<script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
+		<script type="text/javascript" charset="utf-8" src="lib/kindeditor/kindeditor-all-min.js"></script>
+		<script type="text/javascript" charset="utf-8" src="lib/kindeditor/plugins/code/prettify.js"></script>
+		<script type="text/javascript" charset="utf-8" src="lib/kindeditor/lang/zh-CN.js"></script>
+		<script type="text/javascript">
+	        //加载KindEditor插件
+	    KindEditor.ready(function(K) {
+	    	var callBackPath = 'http://127.0.0.1:8020/H-ui.admin/redirect.html';//redirect.html的请求路径 例如 http://www.abc.com/redirect.html
+	        var KE = K.create('textarea[name="uploadImage"]', {
+	            cssPath : 'lib/kindeditor/plugins/code/prettify.css',
+	            filePostName  : "file",
+	            uploadJson : 'http://127.0.0.1:8080/Chaozhou/kindEditorUpload?callBackPath=' + callBackPath,
+	            allowFileManager : false,
+	            allowImageUpload: true, //上传图片框本地上传的功能，false为隐藏，默认为true
+	            allowImageRemote : false, //上传图片框网络图片的功能，false为隐藏，默认为true
+	            formatUploadUrl:false,
+	            resizeType: 0
+	            /*afterCreate : function() {
+	                var self = this;
+	                this.sync();
+	                K.ctrl(document, 13, function() {
+	                    self.sync();
+	                    document.forms['myform'].submit();//获取表单的 name 值
+	                });
+	                K.ctrl(self.edit.doc, 13, function() {
+	                    self.sync();
+	                    document.forms['myform'].submit();
+	                });
+	            },*/
+	            //afterBlur:function() { this.sync(); }, 	//失去焦点后，将内容写入textarea中
+	            /*afterUpload:function(url,data,name){
+	                if( name=="image" || name == "multiimagez"){
+                    var img = new Image();
+                    img.src = url;
+                    img.onload = function(){
+                        if( img.width > 600 ){
+                            //当图片的宽度大于 600px 的时候，就将图片的宽度缩放为 600px
+                            KE.html(KE.html().replace('<img src="' + url + '"','<img src="' + url + '" width="600"'));
+                        }else if( img.width == img.height ){
+                            //当图片的宽度和高度一样时候，就将图片的大小缩放为 200px
+                            KE.html(KE.html().replace('<img src="' + url + '"','<img src="' + url + '" width="200"'));
+                    	    }
+                        }
+	                } 
+	            }*/
+	        });
+	        prettyPrint();
+	    });
+    </script>
+	</body>
+</html>
