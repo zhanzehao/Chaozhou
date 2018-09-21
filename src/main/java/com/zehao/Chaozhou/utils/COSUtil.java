@@ -24,13 +24,48 @@ import java.util.UUID;
 
 public class COSUtil {
 
+    private static COSClient cosClient;
+    private static PutObjectRequest putObjectRequest;
+
     private static Gson gson = GsonSingleton.getInstance();
+
+    public static String uploadWithWait(MultipartFile file,Picture picture) throws IOException {
+        JsonResult result = new JsonResult();
+        result.setStatus(-1);
+        String filename = upload(file,picture);
+        try {
+            cosClient.putObject(putObjectRequest);
+            result.setStatus(0);
+            result.setData(filename);
+        }  catch (CosClientException e) {
+            e.printStackTrace();
+        }
+        // 关闭客户端
+        cosClient.shutdown();
+        return gson.toJson(result);
+    }
+
+    public static String uploadWithoutWait(MultipartFile file,Picture picture) throws IOException {
+        String filename = upload(file,picture);
+        new Thread() {
+            public void run() {
+                try {
+                    cosClient.putObject(putObjectRequest);
+                }  catch (CosClientException e) {
+                    e.printStackTrace();
+                }
+                // 关闭客户端
+                cosClient.shutdown();
+            }
+        }.start();
+        return filename;
+    }
 
     //单图片上传
     public static String upload(MultipartFile file,Picture picture) throws IOException {
         //final JsonResult result = new JsonResult();
         //result.setStatus(-1);
-
+        String key;
         String contentType = file.getContentType();
         InputStream inputStream = file.getInputStream();
         long size = file.getSize();
@@ -40,7 +75,7 @@ public class COSUtil {
             // 设置bucket的区域, COS地域的简称请参照 https://www.qcloud.com/document/product/436/6224
             ClientConfig clientConfig = new ClientConfig(new Region(COSConfig.REGION));
             // 生成cos客户端
-            final COSClient cosClient = new COSClient(cred, clientConfig);
+            cosClient = new COSClient(cred, clientConfig);
             // bucket名需包含appid
             String bucketName = COSConfig.BUCKETNAME;
 
@@ -50,7 +85,7 @@ public class COSUtil {
             String uuid = UUID.randomUUID().toString().replaceAll("-", "");
 
             // 目标文件名
-            final String key = "/" + picture.name() + "/" + uuid + ".jpg";
+            key = "/" + picture.name() + "/" + uuid + ".jpg";
 
             ObjectMetadata objectMetadata = new ObjectMetadata();
             // 从输入流上传必须制定content length, 否则http客户端可能会缓存所有数据，存在内存OOM的情况
@@ -58,37 +93,12 @@ public class COSUtil {
             // 默认下载时根据cos路径key的后缀返回响应的contenttype, 上传时设置contenttype会覆盖默认值
             objectMetadata.setContentType(contentType);
 
-            final PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, key, inputStream, objectMetadata);
+            putObjectRequest = new PutObjectRequest(bucketName, key, inputStream, objectMetadata);
             // 设置存储类型, 默认是标准(Standard), 低频(standard_ia), 近线(nearline)
             putObjectRequest.setStorageClass(StorageClass.Standard);
-            new Thread() {
-                public void run() {
-                    try {
-                        cosClient.putObject(putObjectRequest);
-                        //result.setStatus(0);
-                        //result.setData(key.substring(1));
-                        //Logger.info(key.substring(1));
-                    }  catch (CosClientException e) {
-                        e.printStackTrace();
-                    }
-                    // 关闭客户端
-                    cosClient.shutdown();
-                }
-            }.start();
-            /*try {
-                cosClient.putObject(putObjectRequest);
-                result.setStatus(0);
-                result.setData(key.substring(1));
-                Logger.info(key.substring(1));
-            }  catch (CosClientException e) {
-                e.printStackTrace();
-            }
-            // 关闭客户端
-            cosClient.shutdown();*/
-            Logger.info(key.substring(1));
+
             return key.substring(1);
         }
-        //return gson.toJson(result);
         return "";
     }
 }

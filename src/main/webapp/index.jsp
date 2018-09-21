@@ -32,7 +32,7 @@
 				<ul class="cl">
 					<li class="dropDown dropDown_hover"><a href="javascript:;" class="dropDown_A"><i class="Hui-iconfont">&#xe600;</i> 新增 <i class="Hui-iconfont">&#xe6d5;</i></a>
 						<ul class="dropDown-menu menu radius box-shadow">
-							<li><a href="javascript:;" onclick="article_add('添加历史','article-add.html')"><i class="Hui-iconfont">&#xe616;</i> 历史</a></li>
+							<li><a href="javascript:;" onclick="article_add('添加历史','kindeditor.html')"><i class="Hui-iconfont">&#xe616;</i> 历史</a></li>
 							<li><a href="javascript:;" onclick="picture_add('添加景点','picture-add.html')"><i class="Hui-iconfont">&#xe613;</i> 景点</a></li>
 							<li><a href="javascript:;" onclick="product_add('添加特产','product-add.html')"><i class="Hui-iconfont">&#xe620;</i> 特产</a></li>
 							<li><a href="javascript:;" onclick="member_add('添加商家','member-edit.html','','510')"><i class="Hui-iconfont">&#xe66a;</i> 商家</a></li>
